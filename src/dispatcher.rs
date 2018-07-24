@@ -150,8 +150,8 @@ impl Dispatcher {
         {
             let config = self.config.clone();
             let pending_set = format!("dispatcher:{}:pending_set", &config.db_channel);
-            if let Err(_) = pg_conn.execute(&format!("LISTEN {}", config.db_channel), &[]) {
-                eprintln!("Failed to execute LISTEN command in database.");
+            if let Err(error) = pg_conn.execute(&format!("LISTEN {}", config.db_channel), &[]) {
+                eprintln!("[pg-dispatcher-producer] Failed to execute LISTEN command in database: \"{}\".", error);
                 exit(1)
             }
 
